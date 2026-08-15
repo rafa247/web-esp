@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>ESP - Módulos</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f2f2f2;
+
+            color: #222;
+        }
+
+        header {
+
+            background: #222;
+
+            color: white;
+
+            padding: 20px;
+
+            text-align: center;
+        }
+
+        header h1 {
+
+            margin: 0;
+
+            font-size: 32px;
+        }
+
+        header p {
+
+            margin: 8px 0 0;
+
+            color: #ccc;
+        }
+
+        nav {
+
+            background: #333;
+
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 10px;
+
+            padding: 12px;
+        }
+
+        nav a {
+
+            color: white;
+
+            text-decoration: none;
+
+            padding: 10px 18px;
+
+            border-radius: 6px;
+
+            background: #444;
+        }
+
+        nav a:hover {
+
+            background: #555;
+        }
+
+        main {
+
+            max-width: 1000px;
+
+            margin: 30px auto;
+
+            padding: 0 20px;
+        }
+
+        .titulo {
+
+            text-align: center;
+
+            margin-bottom: 25px;
+        }
+
+        .titulo h2 {
+
+            margin-bottom: 8px;
+        }
+
+        .titulo p {
+
+            color: #666;
+        }
+
+        #estado {
+
+            text-align: center;
+
+            padding: 15px;
+
+            margin-bottom: 20px;
+
+            background: white;
+
+            border-radius: 8px;
+
+            border: 1px solid #ddd;
+        }
+
+        #modulos {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(
+                        250px,
+                        1fr
+                    )
+                );
+
+            gap: 20px;
+        }
+
+        .modulo {
+
+            background: white;
+
+            border: 1px solid #ddd;
+
+            border-radius: 10px;
+
+            padding: 20px;
+
+            box-shadow:
+                0 2px 5px
+                rgba(
+                    0,
+                    0,
+                    0,
+                    0.08
+                );
+        }
+
+        .modulo h3 {
+
+            margin-top: 0;
+
+            margin-bottom: 10px;
+
+            font-size: 22px;
+        }
+
+        .modulo p {
+
+            color: #666;
+
+            margin: 7px 0;
+        }
+
+        .publico {
+
+            color: green;
+
+            font-weight: bold;
+        }
+
+        .privado {
+
+            color: #b8860b;
+
+            font-weight: bold;
+        }
+
+        .boton {
+
+            display: inline-block;
+
+            margin-top: 12px;
+
+            padding: 10px 16px;
+
+            background: #222;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 6px;
+
+            text-decoration: none;
+
+            cursor: pointer;
+        }
+
+        .boton:hover {
+
+            background: #444;
+        }
+
+        .vacio {
+
+            grid-column: 1 / -1;
+
+            text-align: center;
+
+            background: white;
+
+            padding: 40px;
+
+            border-radius: 10px;
+
+            border: 1px solid #ddd;
+
+            color: #666;
+        }
+
+        .error {
+
+            color: #b00020;
+
+            background: #ffeaea;
+
+            border: 1px solid #ffb5b5;
+        }
+
+        footer {
+
+            margin-top: 50px;
+
+            background: #222;
+
+            color: #aaa;
+
+            text-align: center;
+
+            padding: 20px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =====================================================
+         ENCABEZADO
+         ===================================================== -->
+
+    <header>
+
+        <h1>ESP</h1>
+
+        <p>
+            Plataforma de módulos para el lenguaje ESP
+        </p>
+
+    </header>
+
+
+    <!-- =====================================================
+         MENÚ
+         ===================================================== -->
+
+    <nav>
+
+        <a href="/">
+            Inicio
+        </a>
+
+        <a href="/crear_cuenta.html">
+            Crear cuenta
+        </a>
+
+        <a href="/publicar.html">
+            Publicar módulo
+        </a>
+
+    </nav>
+
+
+    <!-- =====================================================
+         CONTENIDO
+         ===================================================== -->
+
+    <main>
+
+        <section class="titulo">
+
+            <h2>
+                Módulos ESP
+            </h2>
+
+            <p>
+                Busca módulos publicados para utilizarlos
+                desde tu programa ESP.
+            </p>
+
+        </section>
+
+
+        <!-- =================================================
+             ESTADO
+             ================================================= -->
+
+        <div id="estado">
+
+            Cargando módulos...
+
+        </div>
+
+
+        <!-- =================================================
+             MÓDULOS
+             ================================================= -->
+
+        <section id="modulos">
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         PIE
+         ===================================================== -->
+
+    <footer>
+
+        ESP - Lenguaje de programación
+
+    </footer>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script>
+
+        // ====================================================
+        // ELEMENTOS
+        // ====================================================
+
+        const estado =
+            document.getElementById(
+                "estado"
+            );
+
+        const contenedor =
+            document.getElementById(
+                "modulos"
+            );
+
+
+        // ====================================================
+        // ESCAPAR HTML
+        // ====================================================
+
+        function escaparHTML(texto) {
+
+            const elemento =
+                document.createElement(
+                    "div"
+                );
+
+            elemento.textContent =
+                texto;
+
+            return elemento.innerHTML;
+        }
+
+
+        // ====================================================
+        // CARGAR MÓDULOS
+        // ====================================================
+
+        async function cargarModulos() {
+
+            estado.className = "";
+
+            estado.textContent =
+                "Cargando módulos...";
+
+            contenedor.innerHTML = "";
+
+
+            try {
+
+                const respuesta =
+                    await fetch(
+                        "/api/modulos"
+                    );
+
+
+                // --------------------------------------------
+                // COMPROBAR RESPUESTA HTTP
+                // --------------------------------------------
+
+                if (!respuesta.ok) {
+
+                    throw new Error(
+                        "El servidor respondió con HTTP " +
+                        respuesta.status
+                    );
+
+                }
+
+
+                // --------------------------------------------
+                // COMPROBAR QUE SEA JSON
+                // --------------------------------------------
+
+                const tipo =
+                    respuesta.headers.get(
+                        "content-type"
+                    ) || "";
+
+                if (
+                    !tipo.includes(
+                        "application/json"
+                    )
+                ) {
+
+                    throw new Error(
+                        "El servidor no devolvió JSON."
+                    );
+
+                }
+
+
+                // --------------------------------------------
+                // LEER JSON
+                // --------------------------------------------
+
+                const datos =
+                    await respuesta.json();
+
+
+                // --------------------------------------------
+                // COMPROBAR FORMATO
+                // --------------------------------------------
+
+                if (
+                    !datos ||
+                    !Array.isArray(
+                        datos.modulos
+                    )
+                ) {
+
+                    throw new Error(
+                        "La respuesta del servidor " +
+                        "no tiene un formato válido."
+                    );
+
+                }
+
+
+                // --------------------------------------------
+                // MOSTRAR
+                // --------------------------------------------
+
+                mostrarModulos(
+                    datos.modulos
+                );
+
+
+            }
+            catch (error) {
+
+                console.error(
+                    error
+                );
+
+                estado.className =
+                    "error";
+
+                estado.textContent =
+                    "No se pudieron cargar los módulos: " +
+                    error.message;
+
+                contenedor.innerHTML = "";
+
+            }
+
+        }
+
+
+        // ====================================================
+        // MOSTRAR MÓDULOS
+        // ====================================================
+
+        function mostrarModulos(
+            modulos
+        ) {
+
+            contenedor.innerHTML = "";
+
+
+            // ------------------------------------------------
+            // SIN MÓDULOS
+            // ------------------------------------------------
+
+            if (
+                modulos.length === 0
+            ) {
+
+                const vacio =
+                    document.createElement(
+                        "div"
+                    );
+
+                vacio.className =
+                    "vacio";
+
+                vacio.innerHTML = `
+
+                    <h3>
+                        No hay módulos todavía
+                    </h3>
+
+                    <p>
+                        Sé el primero en publicar
+                        un módulo ESP.
+                    </p>
+
+                    <a
+                        class="boton"
+                        href="/publicar.html"
+                    >
+                        Publicar módulo
+                    </a>
+
+                `;
+
+                contenedor.appendChild(
+                    vacio
+                );
+
+                estado.textContent =
+                    "No hay módulos publicados.";
+
+                return;
+
+            }
+
+
+            // ------------------------------------------------
+            // CADA MÓDULO
+            // ------------------------------------------------
+
+            for (
+                const modulo of modulos
+            ) {
+
+                const tarjeta =
+                    document.createElement(
+                        "div"
+                    );
+
+                tarjeta.className =
+                    "modulo";
+
+
+                const nombre =
+                    modulo.nombre ||
+                    "Sin nombre";
+
+
+                const visibilidad =
+                    modulo.visibilidad ||
+                    "publico";
+
+
+                let clase =
+                    "publico";
+
+                let texto =
+                    "Público";
+
+
+                if (
+                    visibilidad ===
+                    "privado"
+                ) {
+
+                    clase =
+                        "privado";
+
+                    texto =
+                        "Privado";
+
+                }
+
+
+                tarjeta.innerHTML = `
+
+                    <h3>
+                        ${escaparHTML(
+                            nombre
+                        )}
+                    </h3>
+
+                    <p>
+                        Visibilidad:
+                        <span
+                            class="${clase}"
+                        >
+                            ${texto}
+                        </span>
+                    </p>
+
+                    <a
+                        class="boton"
+                        href="/modulo.html?nombre=${encodeURIComponent(
+                            nombre
+                        )}"
+                    >
+                        Ver módulo
+                    </a>
+
+                `;
+
+
+                contenedor.appendChild(
+                    tarjeta
+                );
+
+            }
+
+
+            // ------------------------------------------------
+            // ESTADO
+            // ------------------------------------------------
+
+            estado.textContent =
+                modulos.length +
+                (
+                    modulos.length === 1
+                        ? " módulo encontrado."
+                        : " módulos encontrados."
+                );
+
+        }
+
+
+        // ====================================================
+        // INICIAR
+        // ====================================================
+
+        cargarModulos();
+
+    </script>
+
+
+</body>
+
+</html>

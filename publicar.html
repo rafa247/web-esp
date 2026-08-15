@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Publicar módulo - ESP</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+
+            margin: 0;
+
+            font-family:
+                Arial,
+                Helvetica,
+                sans-serif;
+
+            background: #f2f2f2;
+
+            color: #222;
+        }
+
+        .contenedor {
+
+            width: 90%;
+
+            max-width: 700px;
+
+            margin: 40px auto;
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px
+                rgba(0, 0, 0, 0.12);
+        }
+
+        h1 {
+
+            text-align: center;
+
+            margin-top: 0;
+        }
+
+        .campo {
+
+            margin-bottom: 20px;
+        }
+
+        label {
+
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 8px;
+        }
+
+        input,
+        textarea,
+        select {
+
+            width: 100%;
+
+            padding: 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            font-size: 15px;
+        }
+
+        textarea {
+
+            min-height: 250px;
+
+            resize: vertical;
+
+            font-family: monospace;
+        }
+
+        button {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #222;
+
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+        }
+
+        button:hover {
+
+            background: #444;
+        }
+
+        .privado {
+
+            display: none;
+        }
+
+        .mensaje {
+
+            margin-top: 20px;
+
+            padding: 12px;
+
+            border-radius: 7px;
+
+            display: none;
+
+            white-space: pre-wrap;
+        }
+
+        .correcto {
+
+            background: #d9f7df;
+
+            color: #176b2c;
+        }
+
+        .error {
+
+            background: #ffdede;
+
+            color: #9b1c1c;
+        }
+
+        .volver {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 20px;
+
+            color: #333;
+
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+    <h1>
+        Publicar módulo ESP
+    </h1>
+
+
+    <div class="campo">
+
+        <label for="nombre">
+            Nombre del módulo
+        </label>
+
+        <input
+            id="nombre"
+            type="text"
+            placeholder="ejemplo"
+            autocomplete="off"
+        >
+
+    </div>
+
+
+    <div class="campo">
+
+        <label for="visibilidad">
+            Visibilidad
+        </label>
+
+        <select id="visibilidad">
+
+            <option value="publico">
+                Público
+            </option>
+
+            <option value="privado">
+                Privado
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div
+        id="campoPrivado"
+        class="campo privado"
+    >
+
+        <label for="contraseña">
+            Contraseña
+        </label>
+
+        <input
+            id="contraseña"
+            type="password"
+            placeholder="Contraseña del módulo"
+        >
+
+    </div>
+
+
+    <div class="campo">
+
+        <label for="codigo">
+            Código del módulo ESP
+        </label>
+
+        <textarea
+            id="codigo"
+            placeholder="Escribe aquí el código del módulo ESP..."
+        ></textarea>
+
+    </div>
+
+
+    <button
+        id="botonPublicar"
+        type="button"
+    >
+        Publicar módulo
+    </button>
+
+
+    <div
+        id="mensaje"
+        class="mensaje"
+    ></div>
+
+
+    <a
+        class="volver"
+        href="/"
+    >
+        ← Volver al inicio
+    </a>
+
+</div>
+
+
+<script>
+
+
+// ============================================================
+// ELEMENTOS
+// ============================================================
+
+const nombreInput =
+    document.getElementById(
+        "nombre"
+    );
+
+
+const visibilidadInput =
+    document.getElementById(
+        "visibilidad"
+    );
+
+
+const contraseñaInput =
+    document.getElementById(
+        "contraseña"
+    );
+
+
+const codigoInput =
+    document.getElementById(
+        "codigo"
+    );
+
+
+const campoPrivado =
+    document.getElementById(
+        "campoPrivado"
+    );
+
+
+const botonPublicar =
+    document.getElementById(
+        "botonPublicar"
+    );
+
+
+const mensaje =
+    document.getElementById(
+        "mensaje"
+    );
+
+
+// ============================================================
+// MOSTRAR / OCULTAR CONTRASEÑA
+// ============================================================
+
+visibilidadInput.addEventListener(
+    "change",
+    function () {
+
+        if (
+            visibilidadInput.value ===
+            "privado"
+        ) {
+
+            campoPrivado.style.display =
+                "block";
+
+        } else {
+
+            campoPrivado.style.display =
+                "none";
+
+            contraseñaInput.value =
+                "";
+        }
+
+    }
+);
+
+
+// ============================================================
+// MOSTRAR MENSAJE
+// ============================================================
+
+function mostrarMensaje(
+    texto,
+    correcto
+) {
+
+    mensaje.textContent =
+        texto;
+
+    mensaje.style.display =
+        "block";
+
+    mensaje.className =
+        "mensaje " +
+        (
+            correcto
+                ? "correcto"
+                : "error"
+        );
+}
+
+
+// ============================================================
+// PUBLICAR
+// ============================================================
+
+async function publicarModulo() {
+
+
+    // --------------------------------------------------------
+    // DATOS
+    // --------------------------------------------------------
+
+    const nombre =
+        nombreInput.value.trim();
+
+
+    const visibilidad =
+        visibilidadInput.value;
+
+
+    const contraseña =
+        contraseñaInput.value;
+
+
+    const codigo =
+        codigoInput.value;
+
+
+    // --------------------------------------------------------
+    // COMPROBAR NOMBRE
+    // --------------------------------------------------------
+
+    if (!nombre) {
+
+        mostrarMensaje(
+            "Escribe un nombre para el módulo.",
+            false
+        );
+
+        return;
+    }
+
+
+    // --------------------------------------------------------
+    // COMPROBAR CÓDIGO
+    // --------------------------------------------------------
+
+    if (!codigo.trim()) {
+
+        mostrarMensaje(
+            "Escribe el código ESP del módulo.",
+            false
+        );
+
+        return;
+    }
+
+
+    // --------------------------------------------------------
+    // COMPROBAR CONTRASEÑA
+    // --------------------------------------------------------
+
+    if (
+        visibilidad === "privado" &&
+        !contraseña
+    ) {
+
+        mostrarMensaje(
+            "Un módulo privado necesita una contraseña.",
+            false
+        );
+
+        return;
+    }
+
+
+    // --------------------------------------------------------
+    // DESACTIVAR BOTÓN
+    // --------------------------------------------------------
+
+    botonPublicar.disabled =
+        true;
+
+    botonPublicar.textContent =
+        "Publicando...";
+
+
+    try {
+
+
+        // ====================================================
+        // CREAR PAQUETE
+        // ====================================================
+
+        const paquete = {
+
+            esp_modulo: 1,
+
+            nombre: nombre,
+
+            visibilidad: visibilidad,
+
+            codigo: codigo,
+
+            contraseña_hash:
+                visibilidad === "privado"
+                    ? await crearHash(
+                        contraseña
+                    )
+                    : null
+        };
+
+
+        // ====================================================
+        // ENVIAR AL SERVIDOR
+        // ====================================================
+
+        const respuesta =
+            await fetch(
+                "/api/publicar",
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body:
+                        JSON.stringify(
+                            paquete
+                        )
+                }
+            );
+
+
+        // ====================================================
+        // LEER RESPUESTA
+        // ====================================================
+
+        let datos;
+
+        try {
+
+            datos =
+                await respuesta.json();
+
+        } catch {
+
+            throw new Error(
+                "El servidor no devolvió una respuesta JSON válida."
+            );
+        }
+
+
+        // ====================================================
+        // ERROR DEL SERVIDOR
+        // ====================================================
+
+        if (!respuesta.ok) {
+
+            mostrarMensaje(
+
+                datos.error ||
+                "No se pudo publicar el módulo.",
+
+                false
+
+            );
+
+            return;
+        }
+
+
+        // ====================================================
+        // CORRECTO
+        // ====================================================
+
+        mostrarMensaje(
+
+            "Módulo publicado correctamente.\n\n" +
+            "Nombre: " +
+            datos.nombre +
+            "\n" +
+            "Visibilidad: " +
+            datos.visibilidad,
+
+            true
+
+        );
+
+
+        // ----------------------------------------------------
+        // LIMPIAR
+        // ----------------------------------------------------
+
+        codigoInput.value =
+            "";
+
+        contraseñaInput.value =
+            "";
+
+
+    } catch (error) {
+
+        mostrarMensaje(
+
+            "No se pudo conectar con el servidor.\n\n" +
+            error.message,
+
+            false
+
+        );
+
+    } finally {
+
+        botonPublicar.disabled =
+            false;
+
+        botonPublicar.textContent =
+            "Publicar módulo";
+    }
+
+}
+
+
+// ============================================================
+// SHA-256
+// ============================================================
+
+async function crearHash(
+    texto
+) {
+
+    const datos =
+        new TextEncoder().encode(
+            texto
+        );
+
+
+    const hash =
+        await crypto.subtle.digest(
+            "SHA-256",
+            datos
+        );
+
+
+    const bytes =
+        new Uint8Array(
+            hash
+        );
+
+
+    return Array
+        .from(
+            bytes
+        )
+        .map(
+            byte =>
+                byte
+                    .toString(16)
+                    .padStart(2, "0")
+        )
+        .join("");
+}
+
+
+// ============================================================
+// BOTÓN
+// ============================================================
+
+botonPublicar.addEventListener(
+    "click",
+    publicarModulo
+);
+
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: esp-web
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: "python web/web.py"
+    envVars:
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        value: 10000
